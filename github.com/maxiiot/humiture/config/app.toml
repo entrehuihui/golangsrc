@@ -1,0 +1,31 @@
+# workpath: /usr/local/humiture/
+[general]
+ port=9000
+ workPath="../ui"
+ chartNum=30
+ dsn="postgres://test:test@127.0.0.1:5432/test?sslmode=disable"
+ automigrate=true
+ # debug=5,info=4,warning=3,error=2,fatal=1,panic=0
+ logLevel=5
+
+# mqttserver
+[mqttserver]
+  host="tcp://127.0.0.1:1883"
+  username=""
+  password=""
+  cafile=""
+  applicationID=4
+  rxTopic="application/%s/node/%s/rx"
+#influxdb
+[influxdb]
+#数据库地址
+addr="http://127.0.0.1:8086"
+#登陆名和密码
+username= ""
+Password= ""
+#库名
+database="maxiiot"
+#表名
+table= "maxiiot"
+#时间精度
+precision= "s"

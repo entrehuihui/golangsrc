@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>humiture demo</title>
+	<script src="ui/highcharts/code/lib/jquery.min.js"></script>
+	<script src="ui/highcharts/code/highcharts.js"></script>
+	<script src="ui/highcharts/code/modules/exporting.js"></script>
+	<script src="ui/highcharts/code/modules/series-label.js"></script>
+	<script src="ui/highcharts/code/modules/oldie.js"></script>
+	<script src="ui/highcharts/code/plugins/highcharts-zh_CN.js"></script>
+	<link href="ui/highcharts/graphics/maxiiot.ico" rel="shortcut icon">
+
+	<link type="text/css" rel="stylesheet" href="ui/css/bootstrap.min.css" />
+
+	<script type="text/javascript" src="ui/My97DatePicker/WdatePicker.js"></script>
+
+	<script type="text/javascript" src="ui/js/jqPaginator.js"></script>
+
+	<style type="text/css">
+		body {
+			background-color: #f3f3f3;
+		}
+
+		.highcharts-credits {
+			display: none;
+		}
+
+		.pldimg {
+			width: 100%;
+			margin-bottom: 25px;
+		}
+
+		#highchart2 {
+			overflow: hidden;
+			margin-bottom: 35px;
+		}
+
+		#highchart2 .pldchosesb {
+			margin-right: 15px;
+		}
+
+		#highchart2 .pldchosesb,
+		.pldchosetext {
+			float: left;
+		}
+
+		.pldtable {
+			width: 100%;
+			margin: 0 auto;
+		}
+
+		.pldtable thead {
+			background-color: #f1f2f0;
+		}
+
+		.pldtable,
+		.pldtable tr,
+		.pldtable thead {
+			display: block;
+		}
+
+		.pldtable thead,
+		.pldtable tr {
+			width: 100%;
+		}
+
+		.pldtable tr {
+			height: 40px;
+			line-height: 38px;
+		}
+
+		.pldtable tr:nth-child(even) {
+			background-color: #f8f9f6;
+		}
+
+		.pldtable tr td {
+			display: inline-block;
+			text-align: center;
+			width: 16%;
+		}
+
+		#pldtr {
+			display: block;
+		}
+
+		#pagination2 {
+			float: right;
+		}
+
+		#highchart1,
+		#highchart2 {
+			padding-left: 20px;
+			margin-bottom: 20px;
+			overflow: hidden;
+			margin-top: 50px;
+		}
+
+		#highchart1 select {
+			height: 38px;
+			border: 1px solid #dbdbdb;
+			width: 260px;
+			border-radius: 6px;
+		}
+
+		#highchart2 select {
+			height: 38px;
+			border: 1px solid #dbdbdb;
+			width: 260px;
+			border-radius: 6px;
+			padding-left: 15px;
+		}
+
+		#highchart2 input {
+			height: 38px;
+			border: 1px solid #dbdbdb;
+			width: 260px;
+			border-radius: 6px;
+			padding-left: 15px;
+		}
+
+		.pldtableall {
+			width: 98%;
+			margin: 0 auto;
+			padding: 17px;
+			background-color: #fff;
+			overflow: hidden;
+		}
+
+		#pldchaxun {
+			width: 82px;
+			height: 40px;
+			border-radius: 6px;
+			background: -webkit-linear-gradient(left, #a7e056, #69d74c);
+			/* Safari 5.1 - 6.0 */
+			color: #fff;
+			font-size: 16px;
+			border: 1px solid transparent;
+			margin-left: 27px;
+		}
+
+		.pagination>li>a,
+		.pagination>li>span {
+			color: #747474;
+			margin-left: 12px;
+			font-size: 14px;
+			border-radius: 4px;
+		}
+
+		.pagination>.active>a,
+		.pagination>.active>span,
+		.pagination>.active>a:hover,
+		.pagination>.active>span:hover,
+		.pagination>.active>a:focus,
+		.pagination>.active>span:focus {
+			background: -webkit-linear-gradient(left, #a7e056, #69d74c);
+			/* Safari 5.1 - 6.0 */
+			color: #fff;
+			border: 1px solid transparent;
+			border-radius: 4px;
+		}
+		.plderrorleft{
+			width: 36%;
+			float: left;
+		}
+		.plderrorright{
+			float: left;
+			margin-left: 3%;
+			height: 110px;
+			width: 59%;
+			position: relative;
+			padding: 15px;
+			top: -5px;
+			margin-top: 45px;
+		}
+		.plderrorright p{
+			position: relative;
+			color: #d23333;
+			z-index: 10;
+			height: 90px;
+			width: 101%;
+			overflow: visible;
+			overflow-y: scroll;
+		}
+		body .plderrorright i{
+			display: block;
+			position: relative;
+		}
+		.plderrorright i{
+			position: absolute;
+		}
+		.plderrorright:after{
+			display: block;
+			content: '';
+			height: 110px;
+			width: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			background-color: #000;
+			opacity: 0.09;
+			border-radius: 6px;
+			z-index: 1;
+		}
+		::-webkit-scrollbar{
+	       width:8px;
+	       background:#fff;/* 整个滚条背景 */
+	       border-radius: 8px;
+	       -webkit-border-radius: 8px;
+	    } 
+	    ::-webkit-scrollbar-thumb{
+	       -webkit-border-radius:8px;
+	       border-radius:8px;
+	       background:#F2F2F2; /* 滚条内嵌颜色 */
+	    }
+	    .pldsetall{
+	    	padding-left: 120px;
+		    margin-bottom: 40px;
+	    	overflow:hidden;
+	    }
+	    .pldmax{
+	    	float: left;
+	    }
+	    .pldmax input{
+    		height: 38px;
+		    border: 1px solid #dbdbdb;
+		    width: 260px;
+		    border-radius: 6px;
+    		float: left;
+    		margin-right: 25px;
+    		padding-left: 15px;
+    	}
+	    .pldsetall button{
+    		float: left;
+    		width: 120px;
+		    height: 40px;
+		    border-radius: 6px;
+		    background: -webkit-linear-gradient(left, #a7e056, #69d74c);
+		    color: #fff;
+		    font-size: 16px;
+		    border: 1px solid transparent;
+		    margin-left: 27px;
+    	}
+    	.pldallipt{
+    		position: relative;
+    	}
+    	.pldallipt .pldsetall{
+    		position: absolute;
+    		top: 0;
+    		left: 0;
+    	}
+	</style>
+</head>
+
+<body>
+	<div style="height: 50px;box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.1);background-color: #fff;">
+		<img src="ui/highcharts/graphics/logo.jpg" style="position:relative;z-index:900;width:8%;left:1%;margin-top: 10px;" />
+	</div>
+
+	<div id="highchart1" style="margin-top: 25px;">
+		
+		<div class="plderrorleft">
+			
+			<div style="margin-top: 15px;">
+				<i style="color: #727272;font-style: normal;">
+					选择展示类型：
+				</i>
+				<select>
+					<option>
+						图表
+					</option>
+					<option>
+						历史数据
+					</option>
+				</select>
+			</div>
+			
+			<div style="margin-top: 10px;">
+				<i style="color: #727272;font-style: normal;padding-left: 27px;">
+					选择设备：
+				</i>
+				<select>
+		
+				</select>
+			</div>
+			
+			<div style="margin-top: 10px;">
+				<i style="color: #727272;font-style: normal;padding-left: 27px;">
+					选择设置：
+				</i>
+				<select id="pldsel">
+					<option>设置报警阀值</option>
+					<option>更新设备时间</option>
+					<option>设置上传间隔</option>
+					<option>设置EUI/ADDR</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="plderrorright">
+			<i style="position: absolute;top: -25px;">
+				报警消息
+			</i>
+			<p>
+				<span></span>
+			</p>
+		</div>
+		
+	</div>
+	
+	<div class="pldallipt">
+		<div class="pldsetall">
+			<div class="pldmax">
+				<input type="text" placeholder="请设定最大温度值" />
+				<input type="text" placeholder="请设定最小温度值" />
+				<input type="text" placeholder="请设定最大湿度值" />
+				<input type="text" placeholder="请设定最小湿度值" />
+			</div>
+			<button id="maxvalue1">设置报警阀值</button>
+		</div>
+		
+		<div class="pldsetall">
+			<div class="pldmax">
+				<input type="text" id="interval" placeholder="请输入上传间隔" />
+			</div>
+			<button id="maxvalue2" style="margin-left: -5px;margin-right: 15px;">设置上传间隔</button>
+		</div>
+		
+		<div class="pldsetall">
+			<div class="pldmax">
+				<input type="text" placeholder="请输入deveui" />
+				<input type="text" placeholder="请输入adr" />
+			</div>
+			<button id="maxvalue3" style="margin-left: -5px;margin-right: 15px;width: auto;">设置deveui/adr</button>
+		</div>
+		
+		<div class="pldsetall">
+			<button id="maxvalu4" style="margin-left: -5px;margin-right: 15px;width: auto;">更新设备时间</button>
+		</div>
+		
+	</div>
+	
+	<p class="pldwillhide" style="padding-left: 20px;color: #333333;font-size:18px;font-style: normal;margin-top: 80px;margin-bottom: 7px;">
+		最新温湿度数据
+	</p>
+	
+	<div class="pldwillhide" style="padding-left: 20px;padding-right: 20px;">
+		<div class="pldimg" id="123" style="width: 99%;"></div>
+	</div>
+
+	<div id="highchart2">
+		<p style="color: #333333;font-size:18px;font-style: normal;margin-top: 30px;margin-bottom: 7px;">
+			历史数据查询
+		</p>
+		<div class="pldchosesb">
+			<i style="color: #727272;font-style: normal;">
+				选择设备：
+			</i>
+			<select>
+
+			</select>
+		</div>
+		<div class="pldchosetext">
+			<i style="color: #727272;font-style: normal;">
+				开始时间：
+			</i>
+			<input type="text" id="d241" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="Wdate" style="width:220px;background-position: 195px 10px;"
+			/>
+			<i style="color: #727272;font-style: normal;">
+				结束时间：
+			</i>
+			<input type="text" id="d241" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="Wdate" style="width:220px;background-position: 195px 10px;"
+			/>
+			<button id="pldchaxun">查询</button>
+		</div>
+	</div>
+
+	<div class="pldtableall">
+		<table class="pldtable">
+			<thead>
+				<tr>
+					<td>
+						设备名称
+					</td>
+					<td>
+						设备EUI
+					</td>
+					<td>
+						温度(℃)
+					</td>
+					<td>
+						湿度(%)
+					</td>
+					<td>
+						电量(%)
+					</td>
+					<td>
+						时间
+					</td>
+				</tr>
+			</thead>
+			<tbody id="pldtr">
+			</tbody>
+		</table>
+		<p id="p2"></p>
+		<ul class="pagination" id="pagination2"></ul>
+	</div>
+
+
+	<script language="JavaScript">
+		$(document).ready(function () {
+			var pldurl = window.location.protocol + "//" + window.location.host+'/api'
+
+			$('#highchart2').hide()
+			$('.pldtableall').hide()
+
+			$('.plderrorleft select').change(function(e){
+				if($(e.target).find('option:selected').val().trim()=='历史数据'){
+					$('.pldwillhide').hide()
+					$('#highchart2').show()
+					$('.pldtableall').show()
+				}else{
+					$('.pldwillhide').show()
+					$('#highchart2').hide()
+					$('.pldtableall').hide()
+				}
+			})
+			
+			$('.pldsetall').hide()
+			$('.pldsetall').eq(0).show()
+			
+			$('#pldsel').change(function(e){
+				if($(e.target).find('option:selected').index()==0){
+					$('.pldsetall').eq(0).show()
+					$('.pldsetall').eq(1).hide()
+					$('.pldsetall').eq(2).hide()
+					$('.pldsetall').eq(3).hide()
+				}else if($(e.target).find('option:selected').index()==1){
+					$('.pldsetall').eq(0).hide()
+					$('.pldsetall').eq(1).hide()
+					$('.pldsetall').eq(2).hide()
+					$('.pldsetall').eq(3).show()
+				}else if($(e.target).find('option:selected').index()==2){
+					$('.pldsetall').eq(0).hide()
+					$('.pldsetall').eq(1).show()
+					$('.pldsetall').eq(2).hide()
+					$('.pldsetall').eq(3).hide()
+				}else if($(e.target).find('option:selected').index()==3){
+					$('.pldsetall').eq(0).hide()
+					$('.pldsetall').eq(1).hide()
+					$('.pldsetall').eq(2).show()
+					$('.pldsetall').eq(3).hide()
+				}
+			})
+
+			//获取设备列表开始
+			function getsb() {
+				$.ajax({
+					type: "get",
+					url: pldurl + "/dev/list",
+					async: false,
+					dataType: 'json',
+					success: function (cc) {
+						if (cc.data.devices!=null){
+							for (var i = 0; i < cc.data.devices.length; i++) {
+							//						$('#highchart1').append("<option value='"+cc.data.devices[i].dev_name+"' data-idmore='"+cc.data.devices[i].dev_eui++"'>"+text+"</option>")
+							$('#highchart1').eq(0).find('select').eq(1).append("<option value=" + cc.data.devices[i].dev_name + " data-idmore=" + cc.data.devices[i].dev_eui + ">" + cc.data.devices[i].dev_name + "</option>")
+							$('#highchart2').eq(0).find('select').eq(0).append("<option value=" + cc.data.devices[i].dev_name + " data-idmore=" + cc.data.devices[i].dev_eui + ">" + cc.data.devices[i].dev_name + "</option>")
+
+
+							
+						}
+						$('#highchart1').eq(0).find('select').eq(1).attr('data-idmore',cc.data.devices[0].dev_eui)
+						$('#highchart2').eq(0).find('select').eq(0).attr('data-idmore',cc.data.devices[0].dev_eui)
+						}
+					}
+				});
+
+			}
+			getsb()
+
+			//更新设备时间
+        	function downlink() {
+				$.ajax({
+					type: "get",
+					url: pldurl + "/dev/downlink/" + $('#highchart1').find('select').eq(1).attr('data-idmore'),
+					async: false,
+					dataType: 'json',
+					success: function(cc){
+						alert("系统时间已发送，待设备更新.")
+					},
+					error:function(cc){
+						var res=$.parseJSON(cc.responseText)
+						alert(res.msg)
+					}
+				});
+
+			}
+			$('#maxvalu4').click(function() {
+				downlink() 
+			})
+			//获取设备列表结束
+
+
+			temperature_data = [];
+
+			humidity_data = [];
+
+			electricity_data = [];
+
+			categories_data = [];
+
+			pagemore = 10
+
+			function highchart() {
+
+
+				var current_temp = temperature_data[temperature_data.length - 1];
+				var current_humidity = humidity_data[humidity_data.length - 1];
+				var current_elec=electricity_data[electricity_data.length-1];
+				var title = {
+					text: 'Latest: t(' + current_temp + '\xB0C)/h(' + current_humidity + "%)"+ '/e('+current_elec+"%)"
+				};
+				var subtitle = {
+					text: 'From:<a href="http://www.maxiiot.com" target="_blank">www.maxiiot.com</a>'
+				};
+
+
+				//var date = new Date();
+				//var current_day =date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()
+				var xAxis = {
+					categories: categories_data,
+					title: {
+						text: " "
+					}
+				};
+				var yAxis = {
+					title: {
+						text: 'Temp (\xB0C) & Hum(%) & Elec(%)'
+					},
+					plotLines: [{
+						value: 0,
+						width: 1,
+						color: '#808080'
+					}],
+					tickPixelInterval: 10
+				};
+
+				//    var tooltip = {
+				//        //单位
+				//     //   valueSuffix: getSubfix(this.name)
+				//    }
+
+				//配置图表向右对齐 
+				var plotOptions = {
+					line: {
+						dataLabels: {
+							enabled: true
+						},
+						enableMouseTracking: true
+					}
+				};
+
+				var series = [
+					{
+						name: 'temperature',
+						data: temperature_data,
+						tooltip: {
+							valueSuffix: '\xB0C'
+						},
+						dataLabels: {
+							enabled: false, //是否显示数据标签  
+							formatter: function () {
+								return this.y + '°C';
+							}
+						}
+					},
+					{
+						name: 'humidity',
+						data: humidity_data,
+						tooltip: {
+							valueSuffix: '%'
+						},
+						dataLabels: {
+							enabled: false, //是否显示数据标签  
+							formatter: function () {
+								return this.y + '°C';
+							}
+						}
+					},
+					{
+						name: 'electricity',
+						data: electricity_data,
+						tooltip: {
+							valueSuffix: '%'
+						},
+						dataLabels: {
+							enabled: false, //是否显示数据标签  
+							formatter: function () {
+								return this.y + '°C';
+							}
+						}
+					}
+				];
+
+				var json = {};
+
+				json.title = title;
+				json.subtitle = subtitle;
+				json.xAxis = xAxis;
+				json.yAxis = yAxis;
+				//    json.tooltip = tooltip;
+				json.plotOptions = plotOptions;
+				json.series = series;
+
+				$('#123').highcharts(json);
+			}
+			highchart()
+
+			function myrefresh() {
+				highchart()
+			}
+			setInterval(function () { myrefresh() }, 1000 * 30); //指定30秒刷新一次
+			// $("#container").append("<img src='highcharts/graphics/logo.jpg'/>");
+
+			//给下拉框默认值
+			$('#highchart1').find('select').attr('data-idmore', $('#highchart1').find('select option').eq(0).attr('data-idmore'))
+			$('#highchart2').find('select').attr('data-idmore', $('#highchart1').find('select option').eq(0).attr('data-idmore'))
+
+			//下拉框选择事件
+			$('#highchart1 select').change(function () {
+				$('#highchart1').find('select').attr('data-idmore', $(this).find('option:selected').attr('data-idmore'))
+
+				getchart()
+			})
+
+			$('#highchart2 select').change(function () {
+				$('#highchart2').find('select').attr('data-idmore', $(this).find('option:selected').attr('data-idmore'))
+
+				//     	getchart()
+			})
+
+
+
+			//获取图表数据
+			function getchart() {
+				$.ajax({
+					type: "get",
+					url: pldurl + "/dev/humiture/" + $('#highchart1').find('select').eq(1).attr('data-idmore'),
+					async: false,
+					success: function (cc) {
+						temperature_data.splice(0, temperature_data.length)
+						humidity_data.splice(0, humidity_data.length)
+						electricity_data.splice(0, electricity_data.length)
+						categories_data.splice(0, categories_data.length)
+						temperature_data = cc.data.temp
+						humidity_data = cc.data.humidity
+						electricity_data = cc.data.electricity
+						categories_data = cc.data.up_date
+						highchart()
+					}
+				});
+			}
+			getchart()
+			
+			//设置最大值
+			function setmax() {
+				$.ajax({
+					type: "post",
+					url: pldurl + "/dev/downlink/set",
+					async: false,
+					data:JSON.stringify({
+						dev_eui:$('#highchart1').find('select').eq(1).attr('data-idmore'),
+						temp_max:parseInt($('.pldmax input').eq(0).val()),
+						temp_min:parseInt($('.pldmax input').eq(1).val()),
+						hum_max:parseInt($('.pldmax input').eq(2).val()),
+						hum_min:parseInt($('.pldmax input').eq(3).val())
+					}),
+					success: function (cc) {
+						alert('设置成功')
+					},
+					error: function(cc){
+						alert(cc.responseJSON.msg)
+					}
+				});
+			}
+			$('#maxvalue1').click(function(){
+				setmax()
+			})
+			
+			//设置上传间隔
+			function setjiange() {
+				$.ajax({
+					type: "post",
+					url: pldurl + "/dev/downlink/interval",
+					async: false,
+					data:JSON.stringify({
+						dev_eui:$('#highchart1').find('select').eq(1).attr('data-idmore'),
+						interval:parseInt($('#interval').val())
+					}),
+					success: function (cc) {
+						alert('设置成功')
+					},
+					error: function(cc){
+						var res=$.parseJSON(cc.responseText)
+						alert(res.msg)
+					}
+				});
+			}
+			$('#maxvalue2').click(function(){
+				setjiange()
+			})
+			
+			//设置上deveui
+			function setdeveui() {
+				$.ajax({
+					type: "post",
+					url: pldurl + "/dev/downlink/deveui",
+					async: false,
+					data:JSON.stringify({
+						dev_eui:$('#highchart1').find('select').eq(1).attr('data-idmore'),
+						dev_eui_new:$('.pldmax').eq(2).find('input').eq(0).val(),
+						addr:$('.pldmax').eq(2).find('input').eq(1).val()
+					}),
+					success: function (cc) {
+						alert('设置成功')
+					},
+					error:function(cc){
+						var res=$.parseJSON(cc.responseText)
+						alert(res.msg)
+					}
+				});
+			}
+			$('#maxvalue3').click(function(){
+				setdeveui()
+			})
+			
+			
+
+			function p(s) {
+				return s < 10 ? '0' + s : s;
+			}
+
+			var myDate = new Date();
+			//获取当前年
+			var year = myDate.getFullYear();
+			//获取当前月
+			var month = myDate.getMonth() + 1;
+			//获取当前日
+			var date = myDate.getDate();
+			var h = myDate.getHours();       //获取当前小时数(0-23)
+			var m = myDate.getMinutes();     //获取当前分钟数(0-59)
+			var s = myDate.getSeconds();
+
+			var now = year + '-' + p(month) + "-" + p(date) + " " + p(h) + ':' + p(m) + ":" + p(s);
+			var now1 = year + '-' + p(month) + "-" + p(date) + " " + '00:' + "00:" + "00";
+			console.log(now)
+			//默认时间
+			$('.pldchosetext').find('input').eq(1).val(now)
+			$('.pldchosetext').find('input').eq(0).val(now1)
+			//默认每页显示多少条
+			var per_pages = 20
+			//获取历史数据
+			function getchart2() {
+				$.ajax({
+					type: "get",
+					url: pldurl + "/dev/history/" + $('#highchart2').find('select').attr('data-idmore'),
+					async: false,
+					data: {
+						per_page: per_pages,
+						page: function () {
+							if ($('.active').find('a').text() == '') {
+								return 1
+							} else {
+								return $('.active').find('a').text()
+							}
+						},
+						start: $('.pldchosetext').find('input').eq(0).val(),
+						end: $('.pldchosetext').find('input').eq(1).val()
+					},
+					success: function (cc) {
+						if (cc.data.humiture) {
+							for (var i = 0; i < cc.data.humiture.length; i++) {
+								$('#pldtr').append("<tr><td>" + cc.data.humiture[i].dev_name + "</td><td>" + cc.data.humiture[i].dev_eui + "</td><td>" + cc.data.humiture[i].temperature + "</td><td>" + cc.data.humiture[i].humidity + "</td><td>" + cc.data.humiture[i].electricity + "</td><td>" + cc.data.humiture[i].up_date + "</td></tr>")
+							}
+						}
+						if (cc.data.total_count ==0){
+							pagemore=1
+						}else{
+							pagemore = parseInt(Math.ceil(cc.data.total_count / per_pages))
+						}
+						
+						//	    			pldmethod()
+					}
+				});
+			}
+			getchart2()
+			pldmethod()
+
+			function pldmethod() {
+				$.jqPaginator('#pagination2', {
+					totalPages: pagemore,
+					totalCounts: 1,
+					visiblePages: 100,
+					currentPage: 1,
+					prev: '<li class="prev"><a href="javascript:;">&lt</a></li>',
+					next: '<li class="next"><a href="javascript:;">&gt</a></li>',
+					page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+					onPageChange: function (num, type) {
+						$('#pldtr').html('')
+						setTimeout(function () { getchart2() }, 100)
+					}
+				});
+			}
+
+
+			$('#pldchaxun').click(function () {
+				$('#pldtr').html('')
+				getchart2()
+				pldmethod()
+			})
+            
+            //获取告警信息
+            var websocketurl=window.location.host
+            var ws=new WebSocket('ws://'+websocketurl+'/alarm')
+            
+            ws.onopen=function(){
+            	ws.send('hello')
+            }
+            
+            ws.onmessage=function(dd){
+            	console.log(dd.data)
+            	
+            	if($('.plderrorright p i').length>0){
+            		if($('.plderrorright p i').length>7){
+            			$('.plderrorright p').find('i').eq(7).remove()
+            		}
+            		$('.plderrorright p i').eq(0).before('<i>'+dd.data+'</i>')
+            	}else{
+            		$('.plderrorright p span').before('<i>'+dd.data+'</i>')
+            	}
+            	
+            }
+            
+            ws.onerror=function(){
+            	console.log('出错了')
+            }
+            
+            ws.onclose=function(){
+            	console.log('已关闭')
+            }
+            
+		});
+
+	</script>
+</body>
+
+</html>
